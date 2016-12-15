@@ -1,0 +1,13 @@
+##fileformat=VCFv4.1
+##fileDate=none
+##source=custom
+##seed=none
+##reference=x.fa
+##phasin=false
+##commandline=custom
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Alternate allele count">
+##INFO=<ID=TYPE,Number=A,Type=String,Description="Type of each allele (snp, ins, del, mnp, complex)">
+##INFO=<ID=SVTYPE,Number=A,Type=String,Description="Type of SV">
+##INFO=<ID=LEN,Number=A,Type=Integer,Description="Length of each alternate allele">
+##INFO=<ID=SVLEN,Number=A,Type=Integer,Description="Length of SV">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT
