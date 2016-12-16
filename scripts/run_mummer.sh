@@ -1,5 +1,5 @@
 nucmer=/lustre/scratch110/sanger/ed3/yeastPACB/MUMmer3.23/nucmer
-nucmerArgs="-maxmatch -l 100 -c 50"
+nucmerArgs="-maxmatch -l 100 -c 100"
 ref=$1
 query=$2
 
