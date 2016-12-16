@@ -1,5 +1,5 @@
-asmFASTA=$1
-refFASTA=$2
+refFASTA=$1
+asmFASTA=$2
 bedFile=$3
 
 fasthack=
@@ -10,6 +10,9 @@ outVCF=$4
 ## CHROM    POS_START(REF)  POS_END(REF)    ID  LENGTH(REF) STRAND  TYPE    LEN(ref)    LEN(asm) IRREL  IRREL
 cat ./essential/vcf_header.txt >> ${outVCF}
 
+tmpBED=tmp.x.tmp.bed
+grep "Deletion" ${bedFile} > $tmpBED
+
 #for line in `cat ${bedFile}`
 while IFS='' read -r line || [[ -n "$line" ]]; do
    IFS='	' read -r -a array <<< "$line" 
@@ -17,4 +20,6 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
    altseq="<DEL>"
    infoCol="SVTYPE=${array[6]};SVLEN=${array[4]}"
    echo -e "${array[0]}	${array[1]}	${array[3]}	${rseq}\t${altseq}	"PASS"	99	${infoCol}	" >> ${outVCF}
-done < "${bedFile}"
+done < "${tmpBED}"
+
+rm $tmpBED
