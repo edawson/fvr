@@ -12,12 +12,14 @@ outVCF=$4
 cat ./essential/vcf_header.txt >> ${outVCF}
 
 tmpBed="tmp.${bedFile}"
-grep "Insertion" $bedFile > tmp.tmp.x.bed
-./scripts/rearrange_bedfile.sh tmp.tmp.x.bed > $tmpBed
+grep "Insertion" $bedFile > $tmpBed
+./scripts/rearrange_bedfile.sh $tmpBed > re.$bedFile
 outFA=`basename ${outVCF} .vcf `.insertions.fasta
    
-./bedtools2/bin/bedtools getfasta -name -fi ${asmFasta} -bed ${tmpBed} -fo /dev/stdout | grep -v "skipping" > ${outFA}
-rm tmp.tmp.x.bed
+bedFile=re.${bedFile}
+chrBASE=`basename ${outVCF} .vcf `
+sed -i "s/Assem/${chrBASE}_Assem/g" $bedFile
+./bedtools2/bin/bedtools getfasta -name -fi ${asmFasta} -bed $bedFile -fo /dev/stdout | grep -v "skipping" > ${outFA}
 rm $tmpBed
 #for line in `cat ${bedFile}`
 while IFS='' read -r line || [[ -n "$line" ]]; do
@@ -27,6 +29,9 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
    ## write it to a fasta file with the other sequences,
    ## and record the sequence name in the ALT column
    altseq="<${array[3]}>"
-   infoCol="SVTYPE=${array[6]};SVLEN=${array[4]}"
-   echo -e "${array[0]}	${array[1]}	${array[3]}	${rseq}\t${altseq}	"PASS"	99	${infoCol}	" >> ${outVCF}
+   infoCol="SVTYPE=INS;SVLEN=`expr ${array[2]} - ${array[1]}`"
+   #infoCol="SVTYPE=${array[6]};SVLEN=${array[4]}"
+   echo -e "${array[0]}	`expr ${array[1]} + 1`	${array[3]}	${rseq}\t${altseq}	"PASS"	99	${infoCol}	" >> ${outVCF}
 done < "${bedFile}"
+
+rm $bedFile

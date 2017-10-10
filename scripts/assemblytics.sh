@@ -1,4 +1,4 @@
-base_dir=/lustre/scratch110/sanger/ed3/yeastPACB
+base_dir=/lustre/scratch115/teams/durbin/users/ed3/yeastPACB
 assemblytics=${base_dir}/Assemblytics/Assemblytics
 delta_file=
 outpre=
